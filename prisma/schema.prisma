@@ -1,0 +1,142 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  clerkUserId   String    @unique
+  email         String    @unique
+  name          String?
+  imageUrl      String?
+  currency      String    @default("USD")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  transactions  Transaction[]
+  budgets       Budget[]
+}
+
+model Account {
+  id           String      @id @default(cuid())
+  name         String
+  type         AccountType
+  balance      Decimal     @default(0) @db.Decimal(18, 2)
+  currency     String      @default("USD")
+  isDefault    Boolean     @default(false)
+  color        String      @default("#6366f1")
+  icon         String      @default("wallet")
+  userId       String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([userId])
+}
+
+model Transaction {
+  id              String           @id @default(cuid())
+  type            TransactionType
+  amount          Decimal          @db.Decimal(18, 2)
+  description     String
+  date            DateTime
+  category        String
+  subCategory     String?
+  currency        String           @default("USD")
+  exchangeRate    Decimal?         @db.Decimal(10, 6)
+  isRecurring     Boolean          @default(false)
+  recurringInterval RecurringInterval?
+  nextRecurringDate DateTime?
+  receiptUrl      String?
+  aiInsight       String?
+  tags            String[]
+  status          TransactionStatus @default(COMPLETED)
+  userId          String
+  accountId       String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account         Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([date])
+  @@index([category])
+}
+
+model Budget {
+  id          String    @id @default(cuid())
+  name        String
+  amount      Decimal   @db.Decimal(18, 2)
+  spent       Decimal   @default(0) @db.Decimal(18, 2)
+  category    String
+  period      BudgetPeriod
+  startDate   DateTime
+  endDate     DateTime
+  alertAt     Int       @default(80) // percentage
+  color       String    @default("#6366f1")
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([category])
+}
+
+model InsightCache {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String
+  data       Json
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([userId, type])
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CREDIT_CARD
+  INVESTMENT
+  CRYPTO
+  CASH
+  OTHER
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum TransactionStatus {
+  COMPLETED
+  PENDING
+  CANCELLED
+}
+
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum BudgetPeriod {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}

@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 154 90% 35%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 154 90% 35%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 154 90% 35%;
+    --radius: 0.75rem;
+    --chart-1: 154 90% 35%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 262 52% 47%;
+    --chart-4: 43 96% 58%;
+    --chart-5: 0 91% 71%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 213 31% 91%;
+    --card: 222 47% 8%;
+    --card-foreground: 213 31% 91%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 154 90% 42%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 222 47% 11%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 154 90% 42%;
+    --accent-foreground: 222 47% 6%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 47% 13%;
+    --input: 222 47% 13%;
+    --ring: 154 90% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer utilities {
+  /* Glass morphism */
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-white/10;
+  }
+
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-xl border border-white/5;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent;
+  }
+
+  /* Card hover */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5;
+  }
+
+  /* Shimmer loading */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 25%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 75%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  /* Income/Expense colors */
+  .text-income {
+    @apply text-emerald-500;
+  }
+  .text-expense {
+    @apply text-red-500;
+  }
+
+  /* Sidebar active */
+  .nav-active {
+    @apply bg-primary/15 text-primary border-l-2 border-primary;
+  }
+}
+
+/* Page transition */
+.page-enter {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Number counter animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.count-up {
+  animation: count-up 0.6s ease-out forwards;
+}
