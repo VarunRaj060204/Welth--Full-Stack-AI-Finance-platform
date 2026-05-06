@@ -8,10 +8,6 @@ const nextConfig = {
   },
   serverExternalPackages: ["@prisma/client", "prisma"],
 
-  // ✅ ADD THIS
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-};
+}
 
 export default nextConfig;

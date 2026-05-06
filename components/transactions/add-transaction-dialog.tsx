@@ -123,9 +123,11 @@ export function AddTransactionDialog({
   async function onSubmit(data: FormData) {
     try {
       await createTransaction({
-        ...data,
-        amount: parseFloat(data.amount),
-      });
+  ...data,
+  amount: parseFloat(data.amount),
+  tags: [], // ✅ default empty tags
+  status: "COMPLETED", // ✅ default status
+});
       toast.success("Transaction added successfully!");
       reset();
       setScanResult(null);
