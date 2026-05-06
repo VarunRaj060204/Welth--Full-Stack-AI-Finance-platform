@@ -94,10 +94,11 @@ export function CreateBudgetDialog({
   async function onSubmit(data: FormData) {
     try {
       await createBudget({
-        ...data,
-        amount: parseFloat(data.amount),
-        alertAt: parseInt(data.alertAt),
-      });
+  ...data,
+  color: "#6366f1", // ✅ default color (indigo)
+  amount: parseFloat(data.amount),
+  alertAt: parseInt(data.alertAt),
+});
       toast.success("Budget created!");
       reset();
       setOpen(false);
