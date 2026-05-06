@@ -2,7 +2,7 @@
 
 > A full-stack AI-powered personal finance platform built with Next.js 14, Gemini AI, Prisma, Tailwind CSS, and shadcn/ui.
 
-![Welth Dashboard](https://via.placeholder.com/1200x630/0a0f1e/22c55e?text=Welth+AI+Finance+Platform)
+
 
 ## ✨ Features
 
